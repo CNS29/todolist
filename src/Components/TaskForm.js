@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import {connect} from "react-redux";
+import * as actions from "../Actions/actions";
 class TaskForm extends Component {
   constructor(props) {
     super(props);
@@ -9,27 +11,20 @@ class TaskForm extends Component {
     }
   }
 
-  componentDidMount() {
-    const data = this.props.updateTask;
+  componentWillReceiveProps(nextProps) {
+    const data = nextProps.updateTask;
     if(data) {
       this.setState({
         id: data.id,
-        name: data.taskName,
-        status: data.status
-      })
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const data = nextProps.updateTask;
-    if(nextProps && data) {
-      this.setState({
-        id: data.id,
-        name: data.taskName,
+        name: data.name,
         status: data.status
       })
     }else {
-      this.onClear()
+      this.setState({
+        id: "",
+        name: "",
+        status: false
+      })
     }
   }
 
@@ -46,19 +41,18 @@ class TaskForm extends Component {
   }
 
   closeTaskForm = () => {
-    this.props.closeTaskForm(false)
+    this.props.closeForm()
   }
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.onSubmit(this.state)
+    this.props.addTask(this.state)
     this.onClear();
     this.closeTaskForm()
   }
 
   onClear = () => {
     this.setState({
-      id: "",
       name: "",
       status: false
     })
@@ -66,6 +60,7 @@ class TaskForm extends Component {
 
   render() {
     const {name, status} = this.state;
+    if(!this.props.isDisplayForm) return "";
     return (
       <div className="panel panel-warning">
         <div className="panel-heading">
@@ -102,5 +97,20 @@ class TaskForm extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    isDisplayForm: state.displayForm,
+    updateTask: state.updateTask
+  }
+} 
 
-export default TaskForm;
+const mapSidpatchToProps = (dispatch) => {
+  return {
+    addTask: (task) => {
+      dispatch(actions.addTask(task))
+    },
+    closeForm: () => dispatch(actions.closeForm())
+  }
+}
+
+export default connect(mapStateToProps, mapSidpatchToProps)(TaskForm);

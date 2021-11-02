@@ -1,6 +1,5 @@
 .mr-3 {
     margin-right: 5px;
-    color: #fff;
 }
 
 .ml-3 {
@@ -27,7 +26,56 @@
     cursor: pointer;
 }
 
+.panel {
+    margin-bottom: 20px;
+}
+
 .status-item {
     cursor: pointer;
     user-select: none;
+}
+
+.btn-sort {
+    position: relative;
+}
+
+.btn-sort:hover .sort-dropdown {
+    display: block;
+}
+
+.btn-sort i {
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.sort-dropdown {
+    list-style: none;
+    text-align: left;
+    position: absolute;
+    top: 105%;
+    left: 0;
+    color: #333;
+    background: #fff;
+    border: 1px solid rgba(177, 177, 177, 0.322);
+    padding: 0;
+    white-space: nowrap;
+    display: none;
+}
+
+.sort-dropdown li:nth-child(3) {
+    cursor: default;
+    padding: 10px;
+}
+
+.sort-dropdown li:not(:nth-child(3)) {
+    padding: 5px 30px;
+    vertical-align: middle;
+}
+
+.sort-dropdown li:not(:nth-child(3)):hover {
+    background: rgba(85, 85, 85, 0.11);
+}
+
+.sort-dropdown li i {
+    margin-right: 5px;
 }

@@ -1,12 +1,14 @@
 import React, { Component } from "react";
+import {connect} from "react-redux";
+import * as actions from "../Actions/actions"
 class TaskItem extends Component {
 
   onUpdateStatus = () => {
-    this.props.onUpdateStatus(this.props.task.id) //this.props.task.id: mỗi 1 TaskItem được truyền 1 taak
+    this.props.updateStatus(this.props.task.id) //this.props.task.id: mỗi 1 TaskItem được truyền 1 taak
   }
 
   deleteTask = () => {
-    this.props.deletetask(this.props.task.id)
+    this.props.deleteTask(this.props.task.id)
   }
 
   updateTask = () => {
@@ -18,7 +20,7 @@ class TaskItem extends Component {
     return (
       <tr>
         <td>{id + 1}</td>
-        <td>{task.taskName}</td>
+        <td>{task.name}</td>
         <td className="text-center status-item" onDoubleClick = {this.onUpdateStatus}>{task.status ? "Kích hoạt": "Ẩn"}</td>
         <td className="text-center">
           <button type="button" className="btn btn-warning px-3 mr-3" onClick = {this.updateTask}>
@@ -33,5 +35,20 @@ class TaskItem extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateStatus: (id) => {
+      dispatch(actions.updateStatus(id));
+    },
+    deleteTask: (id) => {
+      dispatch(actions.deleteTask(id));
+      dispatch(actions.closeForm());
+    },
+    updateTask: (task) => {
+      dispatch(actions.updateTask(task));
+      dispatch(actions.openForm())
+    }
+  }
+}
 
-export default TaskItem;
+export default connect(null, mapDispatchToProps)(TaskItem);
